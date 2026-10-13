@@ -14,12 +14,12 @@ def create_parser() -> argparse.ArgumentParser:
         required=True,
     )
 
-    youtube_audio = skills.add_parser(
-        "youtube-audio",
+    youtube_music = skills.add_parser(
+        "youtube-music",
         help="YouTube audio utilities.",
     )
 
-    actions = youtube_audio.add_subparsers(
+    actions = youtube_music.add_subparsers(
         dest="action",
         required=True,
     )
@@ -75,7 +75,7 @@ def main() -> int:
     args = parser.parse_args()
 
     match (args.skill, args.action):
-        case ("youtube-audio", "download"):
+        case ("youtube-music", "download"):
             return handle_download(args)
 
         case _:
