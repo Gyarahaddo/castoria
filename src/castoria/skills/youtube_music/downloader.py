@@ -27,8 +27,7 @@ class YouTubeAudioDownloader:
             )
 
         options = {
-            # "format": "bestaudio[ext=m4a]/bestaudio" if prefer_m4a else "bestaudio",
-            "format": "bestaudio[ext=webm]",
+            "format": "bestaudio[ext=m4a]/bestaudio" if prefer_m4a else "bestaudio",
             "outtmpl": str(workdir / "%(id)s.%(ext)s"),
             "noplaylist": True,
             "quiet": True,
