@@ -18,7 +18,7 @@ Use Castoria's CLI to download audio from a **single YouTube video**. Only local
 ## Download
 
 ```bash
-uv run castoria youtube-audio download \
+uv run castoria youtube-music download \
   --link "https://www.youtube.com/watch?v=VIDEO_ID" \
   --format m4a \
   --storage local \
@@ -28,7 +28,7 @@ uv run castoria youtube-audio download \
 Optional custom basename (without extension):
 
 ```bash
-uv run castoria youtube-audio download \
+uv run castoria youtube-music download \
   --link "https://www.youtube.com/watch?v=VIDEO_ID" \
   --format original \
   --storage local \
