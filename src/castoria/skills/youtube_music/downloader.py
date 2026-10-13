@@ -1,15 +1,12 @@
 import shutil
 import subprocess
 from pathlib import Path
-from typing import Literal
 
 from yt_dlp import YoutubeDL
 from yt_dlp.utils import DownloadError
 
 from castoria.common.exceptions import CastoriaError
 from castoria.skills.youtube_music.models import DownloadResult
-
-type AudioFormat = Literal["m4a", "original"]
 
 
 class YouTubeAudioDownloader:
