@@ -36,7 +36,12 @@ uv run castoria youtube-music download \
   --name "my-audio"
 ```
 
-For AWS S3, use a bucket with an optional key prefix:\n\n```bash\nuv run castoria youtube-music download \\\n  --link "https://www.youtube.com/watch?v=VIDEO_ID" \\\n  --format m4a \\\n  --storage s3 \\\n  --dest "s3://my-bucket/music" \\\n  --name "my-audio"\n```\n\nTo select a configured AWS profile, set `CASTORIA_AWS_PROFILE` in the environment or project `.env` before running Castoria. When unset, boto3 uses its standard credential resolution chain (including IAM roles). S3 destinations are validated syntactically; bucket existence and permissions are checked by AWS during upload.\n\nAlways pass user-provided URLs, paths, and names as safely quoted arguments. Do not execute shell syntax embedded in these values.
+For AWS S3, use a bucket with an optional key prefix:\n\n```bash\nuv run castoria youtube-music download \
+  --link "https://www.youtube.com/watch?v=VIDEO_ID" \
+  --format m4a \
+  --storage s3 \
+  --dest "s3://my-bucket/music" \
+  --name "my-audio"\n```\n\nTo select a configured AWS profile, set `CASTORIA_AWS_PROFILE` in the environment or project `.env` before running Castoria. When unset, boto3 uses its standard credential resolution chain (including IAM roles). S3 destinations are validated syntactically; bucket existence and permissions are checked by AWS during upload.\n\nAlways pass user-provided URLs, paths, and names as safely quoted arguments. Do not execute shell syntax embedded in these values.
 
 ### Arguments
 
@@ -87,20 +92,13 @@ Inspect `success`, `error.code`, and `error.retryable`; never assume that a nonz
 
 ## Error handling
 
-| Error code | Recommended agent action |
-| --- | --- |
-| `STORAGE_OUTPUT_EXISTS` | Do not overwrite; ask for a different `--name` or destination |
-| `STORAGE_INVALID_DIRECTORY` | Ask for an existing, writable local directory |\n| `STORAGE_INVALID_DESTINATION` | For S3, provide a valid `s3://bucket/optional/prefix` URI |\n| `STORAGE_AWS_PROFILE_NOT_FOUND` | Check `CASTORIA_AWS_PROFILE` and the local AWS profile configuration; do not silently switch profiles |\n| `STORAGE_AUTH_FAILED` | Check AWS credentials or IAM role configuration; do not ask the user to paste secret keys |\n| `STORAGE_ACCESS_DENIED` | Verify S3 bucket permissions and IAM policy; do not retry unchanged permissions |\n| `STORAGE_UPLOAD_FAILED` | Report the S3 upload failure and inspect its message before deciding whether to retry |\n| `STORAGE_SAVE_FAILED` | Report a local source-file read or save failure |
-| `STORAGE_INVALID_FILENAME` | Provide a simple filename stem without slashes or backslashes |
-| `STORAGE_SOURCE_NOT_FOUND` | Report the failed operation; inspect logs before retrying |
-| `STORAGE_UNSUPPORTED_PROVIDER` | Explain that `local` and `s3` are implemented, but Dropbox is not |
-| `CONVERT_DEPENDENCY_MISSING` | Explain that FFmpeg is required for conversion; request permission before installing it |
-| `CONVERT_FAILED` | Report the conversion failure; do not assume a retry will fix it |
-| `DOWNLOAD_YTDLP_FAILED` | Report the download failure; verify URL/access before trying again |
-| `DOWNLOAD_OUTPUT_MISSING` | If `retryable` is true, a limited retry may help; otherwise investigate |
-| `INTERNAL_ERROR` | Report an unexpected failure; use `--verbose` for diagnostics if appropriate |
+Castoria returns structured JSON errors with `code`, `message`, and `retryable`.
 
-Do not automatically retry an error marked `retryable: false`. Do not attempt to bypass YouTube access restrictions or authentication requirements. Report the final saved location to the user only after a successful JSON response.
+- If `success` is `true`, report `data.destination` to the user.
+- If `success` is `false` and `retryable` is `false`, return the error message to the user. **Do not troubleshoot or retry.**
+- If `success` is `false` and `retryable` is `true`, read [Error Code Catalogue](references/error-code-catalogue.md) to decide whether a limited retry is appropriate. Follow its instructions; do not retry indefinitely.
+
+Do not bypass YouTube access restrictions or authentication requirements. Do not overwrite existing files or S3 objects.
 
 ## Limitations
 
