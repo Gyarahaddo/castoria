@@ -13,7 +13,8 @@ Use Castoria's CLI to download audio from a **single YouTube video**. Local and 
 1. Confirm the user has permission to download and use the audio.
 2. Obtain the YouTube video URL and destination: an existing local directory for `local`, or an S3 URI (`s3://bucket/optional/prefix`) for `s3`. Ask for missing required information rather than guessing a path or bucket.
 3. Run from the Castoria project with `uv run castoria`, or use `castoria` if the package is installed and on PATH.
-4. For S3, ensure AWS credentials are configured using the standard boto3 credential chain, or set `CASTORIA_AWS_PROFILE` to an existing AWS profile (which must work; Castoria will not fall back to another profile). Do not request or expose AWS access keys in command arguments.\n5. Do not overwrite an existing local file or S3 object. If the requested filename is already in use, ask for another name.
+4. For S3, ensure AWS credentials are configured using the standard boto3 credential chain, or set `CASTORIA_AWS_PROFILE` to an existing AWS profile (which must work; Castoria will not fall back to another profile). Do not request or expose AWS access keys in command arguments.
+5. Do not overwrite an existing local file or S3 object. If the requested filename is already in use, ask for another name.
 
 ## Download
 
@@ -36,12 +37,20 @@ uv run castoria youtube-music download \
   --name "my-audio"
 ```
 
-For AWS S3, use a bucket with an optional key prefix:\n\n```bash\nuv run castoria youtube-music download \
+For AWS S3, use a bucket with an optional key prefix:
+
+```bash
+uv run castoria youtube-music download \
   --link "https://www.youtube.com/watch?v=VIDEO_ID" \
   --format m4a \
   --storage s3 \
   --dest "s3://my-bucket/music" \
-  --name "my-audio"\n```\n\nTo select a configured AWS profile, set `CASTORIA_AWS_PROFILE` in the environment or project `.env` before running Castoria. When unset, boto3 uses its standard credential resolution chain (including IAM roles). S3 destinations are validated syntactically; bucket existence and permissions are checked by AWS during upload.\n\nAlways pass user-provided URLs, paths, and names as safely quoted arguments. Do not execute shell syntax embedded in these values.
+  --name "my-audio"
+```
+
+To select a configured AWS profile, set `CASTORIA_AWS_PROFILE` in the environment or project `.env` before running Castoria. When unset, boto3 uses its standard credential resolution chain (including IAM roles). S3 destinations are validated syntactically; bucket existence and permissions are checked by AWS during upload.
+
+Always pass user-provided URLs, paths, and names as safely quoted arguments. Do not execute shell syntax embedded in these values.
 
 ### Arguments
 
@@ -103,6 +112,7 @@ Do not bypass YouTube access restrictions or authentication requirements. Do not
 ## Limitations
 
 - Downloads a single video's audio, not a playlist.
-- Supports local and AWS S3 storage; Dropbox is not implemented.\n- S3 uses a conditional single-object PUT (`IfNoneMatch=\"*\"`) to prevent overwriting an existing object.
+- Supports local and AWS S3 storage; Dropbox is not implemented.
+- S3 uses a conditional single-object PUT (`IfNoneMatch="*"`) to prevent overwriting an existing object.
 - Does not guarantee that FFmpeg is installed.
 - Does not replace or overwrite existing output files.
