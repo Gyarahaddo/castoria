@@ -1,5 +1,7 @@
 import argparse
 
+from dotenv import load_dotenv
+
 from castoria.skills.youtube_music.cli import handle_download
 
 
@@ -71,6 +73,8 @@ def create_parser() -> argparse.ArgumentParser:
 
 
 def main() -> int:
+    load_dotenv()
+
     parser = create_parser()
     args = parser.parse_args()
 

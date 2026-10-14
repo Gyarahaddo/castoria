@@ -1,10 +1,12 @@
+from __future__ import annotations
+
 import os
+from typing import TYPE_CHECKING
 
 import boto3
-from dotenv import load_dotenv
-from mypy_boto3_s3 import S3Client
 
-load_dotenv()
+if TYPE_CHECKING:
+    from mypy_boto3_s3 import S3Client
 
 
 def create_s3_client() -> S3Client:
