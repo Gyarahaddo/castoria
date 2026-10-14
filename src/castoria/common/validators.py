@@ -49,12 +49,7 @@ def is_valid_s3_url(url: str) -> bool:
         return False
 
     bucket = parsed.netloc
-    if (
-        not _S3_BUCKET_PATTERN.fullmatch(bucket)
-        or ".." in bucket
-        or ".-" in bucket
-        or "-." in bucket
-    ):
+    if not _S3_BUCKET_PATTERN.fullmatch(bucket) or ".." in bucket or ".-" in bucket or "-." in bucket:
         return False
 
     try:

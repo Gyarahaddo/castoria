@@ -5,13 +5,16 @@ description = "A collection of reusable skills designed to empower AI agents thr
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "boto3>=1.43.113",
     "pydantic>=2.14.1",
+    "python-dotenv>=1.2.4",
     "requests>=2.34.2",
     "yt-dlp>=2026.8.19",
 ]
 
 [dependency-groups]
 dev = [
+    "boto3-stubs[s3]>=1.43.113",
     "pytest>=9.1.1",
     "ruff>=0.17.0",
 ]
