@@ -6,6 +6,7 @@ from yt_dlp import YoutubeDL
 from yt_dlp.utils import DownloadError
 
 from castoria.common.exceptions import CastoriaError
+from castoria.common.validators import is_valid_youtube_url
 from castoria.skills.youtube_music.models import DownloadResult
 
 
@@ -17,6 +18,12 @@ class YouTubeAudioDownloader:
         prefer_m4a: bool = True,
     ) -> DownloadResult:
         """Download the best available audio without conversion."""
+        if not is_valid_youtube_url(url):
+            raise CastoriaError(
+                "DOWNLOAD_INVALID_URL",
+                "Invalid YouTube URL.",
+            )
+
         if not workdir.is_dir():
             raise CastoriaError(
                 "DOWNLOAD_INVALID_DIRECTORY",
