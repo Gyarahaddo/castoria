@@ -11,7 +11,7 @@ from castoria.skills.youtube_music.downloader import YouTubeAudioDownloader
 
 def test_download_rejects_missing_workdir(tmp_path: Path) -> None:
     with pytest.raises(CastoriaError) as exc:
-        YouTubeAudioDownloader().download("https://example.com", tmp_path / "missing")
+        YouTubeAudioDownloader().download("https://www.youtube.com/watch?v=video123", tmp_path / "missing")
 
     assert exc.value.code == "DOWNLOAD_INVALID_DIRECTORY"
 
@@ -27,7 +27,7 @@ def test_download_returns_downloaded_file(tmp_path: Path, monkeypatch: pytest.Mo
     factory = MagicMock(return_value=context)
     monkeypatch.setattr("castoria.skills.youtube_music.downloader.YoutubeDL", factory)
 
-    result = YouTubeAudioDownloader().download("https://example.com", tmp_path)
+    result = YouTubeAudioDownloader().download("https://www.youtube.com/watch?v=video123", tmp_path)
 
     assert result.title == "Test song"
     assert result.video_id == "video123"
@@ -47,7 +47,7 @@ def test_download_missing_output_is_retryable(
     )
 
     with pytest.raises(CastoriaError) as exc:
-        YouTubeAudioDownloader().download("https://example.com", tmp_path)
+        YouTubeAudioDownloader().download("https://www.youtube.com/watch?v=video123", tmp_path)
 
     assert exc.value.code == "DOWNLOAD_OUTPUT_MISSING"
     assert exc.value.retryable is True
@@ -62,7 +62,7 @@ def test_download_wraps_ytdlp_error(tmp_path: Path, monkeypatch: pytest.MonkeyPa
     )
 
     with pytest.raises(CastoriaError) as exc:
-        YouTubeAudioDownloader().download("https://example.com", tmp_path)
+        YouTubeAudioDownloader().download("https://www.youtube.com/watch?v=video123", tmp_path)
 
     assert exc.value.code == "DOWNLOAD_YTDLP_FAILED"
 
@@ -139,3 +139,15 @@ def test_convert_reports_ffmpeg_failure(
         YouTubeAudioDownloader().convert(source)
 
     assert exc.value.code == "CONVERT_FAILED"
+
+
+def test_download_rejects_invalid_youtube_url(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    factory = MagicMock()
+    monkeypatch.setattr("castoria.skills.youtube_music.downloader.YoutubeDL", factory)
+
+    with pytest.raises(CastoriaError) as exc:
+        YouTubeAudioDownloader().download("https://example.com/watch?v=video123", tmp_path)
+
+    assert exc.value.code == "DOWNLOAD_INVALID_URL"
+    assert exc.value.retryable is False
+    factory.assert_not_called()
