@@ -84,7 +84,7 @@ def test_handle_download_returns_structured_storage_error(
     downloader = MagicMock()
     downloader.download.side_effect = fake_download
     monkeypatch.setattr("castoria.skills.youtube_music.cli.YouTubeAudioDownloader", lambda: downloader)
-    args.storage = "s3"
+    args.storage = "dropbox"
 
     status = handle_download(args)
     response = json.loads(capsys.readouterr().out)
@@ -94,7 +94,7 @@ def test_handle_download_returns_structured_storage_error(
         "success": False,
         "error": {
             "code": "STORAGE_UNSUPPORTED_PROVIDER",
-            "message": "Unsupported storage provider: s3",
+            "message": "Unsupported storage provider: dropbox",
             "retryable": False,
         },
     }
