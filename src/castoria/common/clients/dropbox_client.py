@@ -2,9 +2,6 @@ import os
 from typing import Final
 
 import dropbox  # pyright: ignore[reportMissingTypeStubs]
-from dotenv import load_dotenv
-
-load_dotenv()
 
 
 class DropboxClient:
