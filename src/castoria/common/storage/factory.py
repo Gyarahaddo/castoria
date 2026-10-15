@@ -1,3 +1,5 @@
+from collections.abc import Iterator
+from contextlib import contextmanager
 from typing import Literal
 
 from castoria.common.clients.dropbox_client import DropboxClient
@@ -11,6 +13,17 @@ type StorageType = Literal["local", "s3", "dropbox"]
 
 
 class StorageProviderFactory:
+    @staticmethod
+    @contextmanager
+    def open(storage_type: str) -> Iterator[StorageProvider]:
+        """Create a storage provider and release owned resources on exit."""
+        provider = StorageProviderFactory.create(storage_type)
+        try:
+            yield provider
+        finally:
+            if isinstance(provider, DropboxStorageProvider):
+                provider.close()
+
     @staticmethod
     def create(storage_type: str) -> StorageProvider:
         match storage_type:
