@@ -82,7 +82,7 @@ castoria youtube-music download \
 
 - Exit code `0`: The operation completed successfully.
 - Exit code `1`: The operation failed. Inspect the JSON error response.
-- Exit code `2`: The command line parsing error. TODO: Should ask agent to NOT to handle but directly report SKILL failed to user?
+- Exit code `2`: Invalid CLI arguments. Report the error from stderr to the user without retrying.
 
 ## Responses
 
