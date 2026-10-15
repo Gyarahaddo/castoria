@@ -78,12 +78,15 @@ castoria youtube-music download \
   --format original
 ```
 
-## Responses
-
-Castoria returns a JSON response on stdout.
+## CLI Return Code
 
 - Exit code `0`: The operation completed successfully.
 - Exit code `1`: The operation failed. Inspect the JSON error response.
+- Exit code `2`: The command line parsing error. TODO: Should ask agent to NOT to handle but directly report SKILL failed to user?
+
+## Responses
+
+Castoria returns a JSON response on stdout.
 
 ### Success
 
