@@ -13,6 +13,16 @@ class DropboxStorageProvider:
     def __init__(self, client: DropboxClient) -> None:
         self._client: DropboxClient = client
 
+    def close(self) -> None:
+        """Release the Dropbox SDK client owned by this provider."""
+        self._client.close()
+
+    def __enter__(self) -> DropboxStorageProvider:
+        return self
+
+    def __exit__(self, exc_type: object, exc_value: object, traceback: object) -> None:
+        self.close()
+
     @staticmethod
     def _normalize_directory(destination: str) -> str:
         """Validate and normalize a Dropbox App Folder path."""
@@ -102,7 +112,8 @@ class DropboxStorageProvider:
             )
 
         directory = self._normalize_directory(destination)
-        target = f"{directory.rstrip('/')}/{name}"
+        filename = f"{name}{source.suffix}"
+        target = f"{directory.rstrip('/')}/{filename}"
 
         try:
             self._ensure_directory(directory)
@@ -120,6 +131,12 @@ class DropboxStorageProvider:
             path = metadata.path_display  # pyright: ignore[reportAttributeAccessIssue, reportUnknownVariableType]
             return path if isinstance(path, str) and path else target
 
+        except OSError as error:
+            raise CastoriaError(
+                code="STORAGE_SAVE_FAILED",
+                message=f"Failed to read source file: {error}",
+            ) from error
+
         except AuthError as error:
             raise CastoriaError(
                 code="STORAGE_AUTH_FAILED",
@@ -133,7 +150,8 @@ class DropboxStorageProvider:
             ) from error
 
         except ApiError as error:
-            if error.error.is_path() and error.error.get_path().is_conflict():
+            # UploadError.path contains UploadWriteFailed; conflict is nested in reason.
+            if error.error.is_path() and error.error.get_path().reason.is_conflict():
                 raise CastoriaError(
                     code="STORAGE_OUTPUT_EXISTS",
                     message=f"Destination already exists: {target}",
