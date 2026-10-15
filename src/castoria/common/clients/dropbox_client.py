@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import os
 from typing import Final
 
@@ -26,7 +28,7 @@ class DropboxClient:
     def close(self) -> None:
         self._client.close()
 
-    def __enter__(self) -> "DropboxClient":
+    def __enter__(self) -> DropboxClient:
         return self
 
     def __exit__(self, exc_type: object, exc_value: object, traceback: object) -> None:
