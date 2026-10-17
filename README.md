@@ -1,5 +1,8 @@
 # Castoria
 
+[![Python](https://img.shields.io/badge/Python-3.12%2B-3776AB?logo=python&logoColor=white)](https://www.python.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 Castoria — Your Agent's Support Servant.
 
 A collection of reusable skills designed to empower AI agents through a unified, machine-friendly CLI.
@@ -49,3 +52,7 @@ Some storage providers require additional credentials or service configuration.
 | --- | --- | --- |
 | AWS S3 | AWS credentials and IAM permissions. | [AWS S3 Setup](docs/setup/aws-s3.md) |
 | Dropbox | Dropbox application credentials and OAuth2 refresh token. | [Dropbox Setup](docs/setup/dropbox.md) |
+
+## License
+
+Castoria is licensed under the [MIT License](LICENSE).
