@@ -1,3 +1,5 @@
+from unittest.mock import MagicMock
+
 import pytest
 
 from castoria.common.exceptions import CastoriaError
@@ -25,8 +27,6 @@ def test_create_unsupported_provider(provider_name: str) -> None:
 
 
 def test_create_dropbox_provider(monkeypatch: pytest.MonkeyPatch) -> None:
-    from unittest.mock import MagicMock
-
     client = MagicMock()
     monkeypatch.setattr("castoria.common.storage.factory.DropboxClient", lambda: client)
 
@@ -34,3 +34,25 @@ def test_create_dropbox_provider(monkeypatch: pytest.MonkeyPatch) -> None:
 
     assert isinstance(provider, DropboxStorageProvider)
     assert provider._client is client
+
+
+def test_open_dropbox_closes_client(monkeypatch: pytest.MonkeyPatch) -> None:
+    client = MagicMock()
+    monkeypatch.setattr("castoria.common.storage.factory.DropboxClient", lambda: client)
+
+    with StorageProviderFactory.open("dropbox") as provider:
+        assert isinstance(provider, DropboxStorageProvider)
+        client.close.assert_not_called()
+
+    client.close.assert_called_once_with()
+
+
+def test_open_dropbox_closes_client_on_error(monkeypatch: pytest.MonkeyPatch) -> None:
+    client = MagicMock()
+    monkeypatch.setattr("castoria.common.storage.factory.DropboxClient", lambda: client)
+
+    with pytest.raises(RuntimeError, match="upload failed"):
+        with StorageProviderFactory.open("dropbox"):
+            raise RuntimeError("upload failed")
+
+    client.close.assert_called_once_with()
