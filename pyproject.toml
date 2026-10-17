@@ -18,10 +18,12 @@ dev = [
     "boto3-stubs[s3]>=1.43.113",
     "pytest>=9.1.1",
     "ruff>=0.17.0",
+    "skills-ref>=0.1.1",
 ]
 
 [project.scripts]
 castoria = "castoria.cli:main"
+skills-ref = "skills_ref.cli:main"
 
 [build-system]
 requires = ["hatchling"]

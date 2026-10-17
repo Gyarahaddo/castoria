@@ -119,7 +119,7 @@ Castoria returns a JSON response on stdout.
 ## Handling
 
 On success, report the downloaded audio title and saved location
-using `data.title` and `data.destination`.
+using `data.title`, `data.storage` and `data.destination`.
 
 On failure, inspect `error.retryable`:
 

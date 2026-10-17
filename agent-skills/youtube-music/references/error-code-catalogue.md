@@ -1,10 +1,7 @@
 # Error Code Catalogue
 
-Reference for the current error codes emitted by Castoria's `youtube-music download` workflow and its shared storage providers.
-
-**Agent policy:** Consult this file only when the CLI returns `success: false` and `error.retryable: true`. For `retryable: false`, return the CLI error to the user without troubleshooting or retrying. Never treat `retryable: true` as an instruction to retry automatically.
-
-The `retryable` value in the **actual CLI response** is authoritative. Most errors default to `false` because `CastoriaError` defaults to `retryable=False`. The same error code can have different values depending on the failure path.
+Reference for error codes returned by Castoria's
+`youtube-music download` command.
 
 ## Download errors
 
