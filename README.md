@@ -47,6 +47,5 @@ Some storage providers require additional credentials or service configuration.
 
 | Provider | Configuration | Setup Guide |
 | --- | --- | --- |
-| Local | No additional credentials required. | — |
 | AWS S3 | AWS credentials and IAM permissions. | [AWS S3 Setup](docs/setup/aws-s3.md) |
 | Dropbox | Dropbox application credentials and OAuth2 refresh token. | [Dropbox Setup](docs/setup/dropbox.md) |
