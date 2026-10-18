@@ -16,8 +16,10 @@ dependencies = [
 
 [dependency-groups]
 dev = [
+    "bandit>=1.9.4",
     "boto3-stubs[s3]>=1.43.113",
     "pytest>=9.1.1",
+    "pytest-cov>=7.1.0",
     "ruff>=0.17.0",
     "skills-ref>=0.1.1",
 ]

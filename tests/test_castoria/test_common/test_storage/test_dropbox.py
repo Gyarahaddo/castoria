@@ -83,9 +83,8 @@ def test_existing_file_in_directory_is_rejected(source: Path, client: MagicMock)
 def test_source_read_failure(source: Path, client: MagicMock) -> None:
     client.client.files_get_metadata.return_value = MagicMock(spec=FolderMetadata)
 
-    with patch.object(Path, "open", side_effect=PermissionError("denied")):
-        with pytest.raises(CastoriaError) as exc:
-            DropboxStorageProvider(client).save(source, "/Music", "song")
+    with patch.object(Path, "open", side_effect=PermissionError("denied")), pytest.raises(CastoriaError) as exc:
+        DropboxStorageProvider(client).save(source, "/Music", "song")
 
     assert exc.value.code == "STORAGE_SAVE_FAILED"
 
@@ -99,8 +98,7 @@ def test_context_manager_closes_client(client: MagicMock) -> None:
 
 
 def test_context_manager_closes_client_on_exception(client: MagicMock) -> None:
-    with pytest.raises(RuntimeError, match="failure"):
-        with DropboxStorageProvider(client):
-            raise RuntimeError("failure")
+    with pytest.raises(RuntimeError, match="failure"), DropboxStorageProvider(client):
+        raise RuntimeError("failure")
 
     client.close.assert_called_once_with()
