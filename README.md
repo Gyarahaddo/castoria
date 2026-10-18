@@ -3,7 +3,7 @@
 [![Python](https://img.shields.io/badge/Python-3.12%2B-3776AB?logo=python&logoColor=white)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![CI](https://github.com/Gyarahaddo/castoria/actions/workflows/ci.yml/badge.svg?branch=dev)](https://github.com/Gyarahaddo/castoria/actions/workflows/ci.yml)
-[![codecov](https://codecov.io/gh/Gyarahaddo/castoria/graph/badge.svg?branch=dev)](https://app.codecov.io/gh/Gyarahaddo/castoria)
+[![codecov](https://codecov.io/github/Gyarahaddo/castoria/branch/dev/graph/badge.svg?token=XWFFU9UORG)](https://codecov.io/github/Gyarahaddo/castoria)
 
 <p align="center">
   <img
