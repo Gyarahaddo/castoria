@@ -20,11 +20,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: astral-sh/setup-uv@v6
         with:
           enable-cache: true
+
       - name: Install dependencies
         run: uv sync
+
       - name: Run Bandit
         run: uv run bandit -r src/castoria -c pyproject.toml
 
@@ -36,10 +39,13 @@ jobs:
       - uses: astral-sh/setup-uv@v6
         with:
           enable-cache: true
+
       - name: Install dependencies
         run: uv sync
+
       - name: Ruff lint
         run: uv run ruff check .
+
       - name: Ruff format
         run: uv run ruff format --check .
 
@@ -51,10 +57,13 @@ jobs:
       - uses: astral-sh/setup-uv@v6
         with:
           enable-cache: true
+
       - name: Install dependencies
         run: uv sync
+
       - name: Run pytest with coverage
         run: uv run pytest --cov=castoria --cov-report=term-missing --cov-report=xml:coverage.xml
+
       - name: Upload coverage artifact
         if: always()
         uses: actions/upload-artifact@v4
@@ -62,6 +71,7 @@ jobs:
           name: coverage-xml
           path: coverage.xml
           if-no-files-found: ignore
+
       - name: Upload coverage to Codecov
         if: ${{ !cancelled() && hashFiles('coverage.xml') != '' }}
         uses: codecov/codecov-action@v5
