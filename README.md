@@ -1,4 +1,4 @@
-# Castoria
+# Castoria - Your Agent's Support Servant
 
 [![Python](https://img.shields.io/badge/Python-3.12%2B-3776AB?logo=python&logoColor=white)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
@@ -9,10 +9,6 @@
     alt="Castoria - Your Agent's Support Servant"
     width="350"
   />
-</p>
-
-<p align="center">
-  <strong>Your Agent's Support Servant.</strong>
 </p>
 
 A collection of reusable skills designed to empower AI agents through a unified, machine-friendly CLI.
