@@ -72,7 +72,4 @@ or any other rights holders of Fate/Grand Order.
 The source code of this project is licensed under the [MIT License](LICENSE).
 
 The project name and character-inspired artwork are references to
-Artoria Caster from Fate/Grand Order.
-
-All related characters, trademarks, and original artwork remain the
-property of their respective owners.
+Artoria Caster from Fate/Grand Order. All related characters, trademarks, and original artwork remain the property of their respective owners.
