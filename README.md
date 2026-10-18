@@ -7,7 +7,7 @@
   <img
     src="assets/castoria-banner.png"
     alt="Castoria - Your Agent's Support Servant"
-    width="650"
+    width="350"
   />
 </p>
 
