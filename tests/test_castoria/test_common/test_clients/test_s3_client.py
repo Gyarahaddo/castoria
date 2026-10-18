@@ -29,8 +29,11 @@ def test_default_credential_chain(profile: str | None, monkeypatch: pytest.Monke
 
 def test_missing_explicit_profile_does_not_fallback(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setenv("CASTORIA_AWS_PROFILE", "missing")
-    with patch(
-        "castoria.common.clients.s3_client.boto3.Session", side_effect=ProfileNotFound(profile="missing")
-    ) as factory, pytest.raises(ProfileNotFound):
+    with (
+        patch(
+            "castoria.common.clients.s3_client.boto3.Session", side_effect=ProfileNotFound(profile="missing")
+        ) as factory,
+        pytest.raises(ProfileNotFound),
+    ):
         create_s3_client()
     factory.assert_called_once_with(profile_name="missing")
