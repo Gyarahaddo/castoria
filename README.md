@@ -63,6 +63,16 @@ Some storage providers require additional credentials or service configuration.
 | AWS S3 | AWS credentials and IAM permissions. | [AWS S3 Setup](docs/setup/aws-s3.md) |
 | Dropbox | Dropbox application credentials and OAuth2 refresh token. | [Dropbox Setup](docs/setup/dropbox.md) |
 
-## License
+## License & Disclaimer
 
-Castoria is licensed under the [MIT License](LICENSE).
+Castoria is an independent, fan-inspired open-source project and is not
+affiliated with, endorsed by, or sponsored by TYPE-MOON, Aniplex, Lasengle,
+or any other rights holders of Fate/Grand Order.
+
+The source code of this project is licensed under the [MIT License](LICENSE).
+
+The project name and character-inspired artwork are references to
+Artoria Caster from Fate/Grand Order.
+
+All related characters, trademarks, and original artwork remain the
+property of their respective owners.
