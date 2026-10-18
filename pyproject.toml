@@ -3,21 +3,28 @@ name = "castoria"
 version = "0.1.0"
 description = "A collection of reusable skills designed to empower AI agents through a unified, machine-friendly CLI."
 readme = "README.md"
+license = "MIT"
 requires-python = ">=3.12"
 dependencies = [
+    "boto3>=1.43.113",
+    "dropbox>=12.2.3",
     "pydantic>=2.14.1",
+    "python-dotenv>=1.2.4",
     "requests>=2.34.2",
     "yt-dlp>=2026.8.19",
 ]
 
 [dependency-groups]
 dev = [
+    "boto3-stubs[s3]>=1.43.113",
     "pytest>=9.1.1",
     "ruff>=0.17.0",
+    "skills-ref>=0.1.1",
 ]
 
 [project.scripts]
 castoria = "castoria.cli:main"
+skills-ref = "skills_ref.cli:main"
 
 [build-system]
 requires = ["hatchling"]

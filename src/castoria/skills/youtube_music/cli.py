@@ -32,13 +32,12 @@ def handle_download(args: argparse.Namespace) -> int:
                 )
 
             # Step 3: Store the final audio file.
-            storage = StorageProviderFactory.create(args.storage)
-
-            storage_result = storage.save(
-                source=audio_path,
-                destination=args.dest,
-                name=args.name or result.title,
-            )
+            with StorageProviderFactory.open(args.storage) as storage:
+                storage_result = storage.save(
+                    source=audio_path,
+                    destination=args.dest,
+                    name=args.name or result.title,
+                )
 
             # Step 4: Return success response after storage completes.
             print(
