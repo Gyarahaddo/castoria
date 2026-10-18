@@ -31,7 +31,6 @@ def test_missing_explicit_profile_does_not_fallback(monkeypatch: pytest.MonkeyPa
     monkeypatch.setenv("CASTORIA_AWS_PROFILE", "missing")
     with patch(
         "castoria.common.clients.s3_client.boto3.Session", side_effect=ProfileNotFound(profile="missing")
-    ) as factory:
-        with pytest.raises(ProfileNotFound):
-            create_s3_client()
+    ) as factory, pytest.raises(ProfileNotFound):
+        create_s3_client()
     factory.assert_called_once_with(profile_name="missing")
