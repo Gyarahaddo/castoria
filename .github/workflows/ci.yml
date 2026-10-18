@@ -24,7 +24,7 @@ jobs:
         with:
           enable-cache: true
       - name: Install dependencies
-        run: uv sync --locked
+        run: uv sync
       - name: Run Bandit
         run: uv run bandit -r src/castoria -c pyproject.toml
 
@@ -37,7 +37,7 @@ jobs:
         with:
           enable-cache: true
       - name: Install dependencies
-        run: uv sync --locked
+        run: uv sync
       - name: Ruff lint
         run: uv run ruff check .
       - name: Ruff format
@@ -52,7 +52,7 @@ jobs:
         with:
           enable-cache: true
       - name: Install dependencies
-        run: uv sync --locked
+        run: uv sync
       - name: Run pytest with coverage
         run: uv run pytest --cov=castoria --cov-report=term-missing --cov-report=xml:coverage.xml
       - name: Upload coverage artifact
