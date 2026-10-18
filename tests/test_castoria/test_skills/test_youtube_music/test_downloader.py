@@ -36,9 +36,7 @@ def test_download_returns_downloaded_file(tmp_path: Path, monkeypatch: pytest.Mo
     assert factory.call_args.args[0]["noplaylist"] is True
 
 
-def test_download_missing_output_is_retryable(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
-) -> None:
+def test_download_missing_output_is_retryable(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     context = MagicMock()
     context.__enter__.return_value.extract_info.return_value = {"id": "video123"}
     monkeypatch.setattr(
@@ -123,9 +121,7 @@ def test_convert_invokes_ffmpeg(tmp_path: Path, monkeypatch: pytest.MonkeyPatch)
     assert result.read_bytes() == b"converted"
 
 
-def test_convert_reports_ffmpeg_failure(
-    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
-) -> None:
+def test_convert_reports_ffmpeg_failure(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
     source = tmp_path / "song.webm"
     source.write_bytes(b"audio")
     monkeypatch.setattr("castoria.skills.youtube_music.downloader.shutil.which", lambda _: "/usr/bin/ffmpeg")

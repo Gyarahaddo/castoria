@@ -2,10 +2,12 @@
 
 [![Python](https://img.shields.io/badge/Python-3.12%2B-3776AB?logo=python&logoColor=white)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![CI](https://github.com/Gyarahaddo/castoria/actions/workflows/ci.yml/badge.svg?branch=dev)](https://github.com/Gyarahaddo/castoria/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/Gyarahaddo/castoria/graph/badge.svg)](https://codecov.io/gh/Gyarahaddo/castoria)
 
 <p align="center">
   <img
-    src="assets/castoria-banner.png"
+    src="assets/castoria.png"
     alt="Castoria - Your Agent's Support Servant"
     width="350"
   />

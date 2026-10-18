@@ -51,8 +51,7 @@ def test_open_dropbox_closes_client_on_error(monkeypatch: pytest.MonkeyPatch) ->
     client = MagicMock()
     monkeypatch.setattr("castoria.common.storage.factory.DropboxClient", lambda: client)
 
-    with pytest.raises(RuntimeError, match="upload failed"):
-        with StorageProviderFactory.open("dropbox"):
-            raise RuntimeError("upload failed")
+    with pytest.raises(RuntimeError, match="upload failed"), StorageProviderFactory.open("dropbox"):
+        raise RuntimeError("upload failed")
 
     client.close.assert_called_once_with()
