@@ -1,5 +1,5 @@
 import shutil
-import subprocess
+import subprocess  # nosec B404
 from pathlib import Path
 
 from yt_dlp import YoutubeDL
@@ -117,7 +117,7 @@ class YouTubeAudioDownloader:
             )
 
         try:
-            subprocess.run(
+            subprocess.run(  # nosec B603
                 [
                     ffmpeg,
                     "-nostdin",
