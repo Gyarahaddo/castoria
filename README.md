@@ -5,7 +5,7 @@
 
 <p align="center">
   <img
-    src="assets/castoria-banner.png"
+    src="assets/castoria.png"
     alt="Castoria - Your Agent's Support Servant"
     width="350"
   />
