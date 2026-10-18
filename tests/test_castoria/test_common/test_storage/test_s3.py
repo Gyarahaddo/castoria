@@ -65,7 +65,9 @@ def test_invalid_name(source: Path, name: str) -> None:
     assert_error(exc, "STORAGE_INVALID_FILENAME")
 
 
-@pytest.mark.parametrize("destination", ["https://my-bucket/music", "s3://", "s3://UPPERCASE/music", "s3://my-bucket?x=1"])
+@pytest.mark.parametrize(
+    "destination", ["https://my-bucket/music", "s3://", "s3://UPPERCASE/music", "s3://my-bucket?x=1"]
+)
 def test_invalid_destination(source: Path, destination: str) -> None:
     with pytest.raises(CastoriaError) as exc:
         S3StorageProvider().save(source, destination, "song")
@@ -122,7 +124,7 @@ def test_source_read_failure(source: Path, client: MagicMock) -> None:
     with (
         patch("castoria.common.storage.s3.create_s3_client", return_value=client),
         patch.object(Path, "open", side_effect=PermissionError("denied")),
+        pytest.raises(CastoriaError) as exc,
     ):
-        with pytest.raises(CastoriaError) as exc:
-            S3StorageProvider().save(source, "s3://my-bucket", "song")
+        S3StorageProvider().save(source, "s3://my-bucket", "song")
     assert_error(exc, "STORAGE_SAVE_FAILED")

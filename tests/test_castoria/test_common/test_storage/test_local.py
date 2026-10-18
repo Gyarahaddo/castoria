@@ -31,9 +31,7 @@ def test_save_copies_file_and_returns_absolute_path(
     assert source.read_bytes() == b"test audio"
 
 
-def test_save_does_not_overwrite(
-    provider: LocalStorageProvider, source: Path, tmp_path: Path
-) -> None:
+def test_save_does_not_overwrite(provider: LocalStorageProvider, source: Path, tmp_path: Path) -> None:
     target = tmp_path / "recording.webm"
     target.write_bytes(b"existing")
 
@@ -46,9 +44,7 @@ def test_save_does_not_overwrite(
 
 
 @pytest.mark.parametrize("name", ["", ".", "..", "../escape", "a/b", r"a\\b"])
-def test_save_rejects_invalid_name(
-    provider: LocalStorageProvider, source: Path, tmp_path: Path, name: str
-) -> None:
+def test_save_rejects_invalid_name(provider: LocalStorageProvider, source: Path, tmp_path: Path, name: str) -> None:
     with pytest.raises(CastoriaError) as exc:
         provider.save(source, str(tmp_path), name)
 
@@ -62,9 +58,7 @@ def test_save_rejects_missing_source(provider: LocalStorageProvider, tmp_path: P
     assert exc.value.code == "STORAGE_SOURCE_NOT_FOUND"
 
 
-def test_save_rejects_missing_destination(
-    provider: LocalStorageProvider, source: Path, tmp_path: Path
-) -> None:
+def test_save_rejects_missing_destination(provider: LocalStorageProvider, source: Path, tmp_path: Path) -> None:
     with pytest.raises(CastoriaError) as exc:
         provider.save(source, str(tmp_path / "missing"), "audio")
 
