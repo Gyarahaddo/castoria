@@ -105,18 +105,22 @@ def s3_error(code: str, status: int) -> ClientError:
 )
 def test_aws_errors(source: Path, client: MagicMock, aws_error: Exception, expected_code: str) -> None:
     client.put_object.side_effect = aws_error
-    with patch("castoria.common.storage.s3.create_s3_client", return_value=client):
-        with pytest.raises(CastoriaError) as exc:
-            S3StorageProvider().save(source, "s3://my-bucket/music", "song")
+    with (
+        patch("castoria.common.storage.s3.create_s3_client", return_value=client),
+        pytest.raises(CastoriaError) as exc,
+    ):
+        S3StorageProvider().save(source, "s3://my-bucket/music", "song")
     assert_error(exc, expected_code)
     assert exc.value.__cause__ is aws_error
 
 
 def test_profile_error_during_client_creation(source: Path) -> None:
     error = ProfileNotFound(profile="missing")
-    with patch("castoria.common.storage.s3.create_s3_client", side_effect=error):
-        with pytest.raises(CastoriaError) as exc:
-            S3StorageProvider().save(source, "s3://my-bucket", "song")
+    with (
+        patch("castoria.common.storage.s3.create_s3_client", side_effect=error),
+        pytest.raises(CastoriaError) as exc,
+    ):
+        S3StorageProvider().save(source, "s3://my-bucket", "song")
     assert_error(exc, "STORAGE_AWS_PROFILE_NOT_FOUND")
 
 
