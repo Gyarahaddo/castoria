@@ -59,7 +59,7 @@ def create_parser() -> argparse.ArgumentParser:
 
     download.add_argument(
         "--name",
-        help="Custom output filename.",
+        help="Custom output filename without extension (default: video title).",
     )
 
     download.add_argument(
