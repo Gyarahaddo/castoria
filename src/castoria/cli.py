@@ -1,4 +1,5 @@
 import argparse
+import sys
 
 from dotenv import load_dotenv
 
@@ -76,7 +77,7 @@ def main() -> int:
     load_dotenv()
 
     parser = create_parser()
-    args = parser.parse_args()
+    args = parser.parse_args(sys.argv[1:] or ["--help"])
 
     match (args.skill, args.action):
         case ("youtube-music", "download"):
