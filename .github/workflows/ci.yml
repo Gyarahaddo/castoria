@@ -15,6 +15,25 @@ permissions:
   contents: read
 
 jobs:
+  lint:
+    name: Lint / Ruff
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+
+      - name: Install dependencies
+        run: uv sync --locked
+
+      - name: Ruff lint
+        run: uv run --no-sync ruff check .
+
+      - name: Ruff format
+        run: uv run --no-sync ruff format --check .
+
   security:
     name: Security / Bandit
     runs-on: ubuntu-latest
@@ -29,13 +48,14 @@ jobs:
         run: uv sync --locked
 
       - name: Run Bandit
-        run: uv run bandit -r src/castoria -c pyproject.toml
+        run: uv run --no-sync bandit -r src/castoria -c pyproject.toml
 
-  lint:
-    name: Lint / Ruff
+  validate_skills:
+    name: Agent Skills / Validate
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: astral-sh/setup-uv@v6
         with:
           enable-cache: true
@@ -43,17 +63,37 @@ jobs:
       - name: Install dependencies
         run: uv sync --locked
 
-      - name: Ruff lint
-        run: uv run ruff check .
+      - name: Validate agent skills
+        shell: bash
+        run: |
+          shopt -s nullglob dotglob
+          skill_dirs=()
+          for path in agent-skills/*; do
+            [[ -d "$path" ]] && skill_dirs+=("$path")
+          done
 
-      - name: Ruff format
-        run: uv run ruff format --check .
+          if (( ${#skill_dirs[@]} == 0 )); then
+            echo "::error::No skill directories found in agent-skills/"
+            exit 1
+          fi
+
+          status=0
+          for skill_dir in "${skill_dirs[@]}"; do
+            echo "::group::Validate $skill_dir"
+            if ! uv run --no-sync skills-ref validate "$skill_dir"; then
+              status=1
+            fi
+            echo "::endgroup::"
+          done
+          exit "$status"
 
   unit_test:
     name: Unit Test / Pytest
+    needs: [lint, security, validate_skills]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: astral-sh/setup-uv@v6
         with:
           enable-cache: true
@@ -62,18 +102,16 @@ jobs:
         run: uv sync --locked
 
       - name: Run pytest with coverage
-        run: uv run pytest --cov=castoria --cov-report=term-missing --cov-report=xml:coverage.xml
+        run: uv run --no-sync pytest --cov=castoria --cov-report=term-missing --cov-report=xml:coverage.xml
 
       - name: Upload coverage artifact
-        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: coverage-xml
           path: coverage.xml
-          if-no-files-found: ignore
+          if-no-files-found: error
 
       - name: Upload coverage to Codecov
-        if: ${{ !cancelled() && hashFiles('coverage.xml') != '' }}
         uses: codecov/codecov-action@v5
         with:
           files: ./coverage.xml
