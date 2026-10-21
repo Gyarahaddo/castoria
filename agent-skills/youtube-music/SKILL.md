@@ -35,10 +35,9 @@ The `original` format preserves the downloaded audio format without conversion.
 1. Obtain the YouTube video URL from the user.
 2. Determine the storage provider。
 3. Obtain the destination from the user.
-   - `local`: Local directory path (`~/Downloads/music`).
-   - `s3`: S3 URI (`s3://bucket-name/optional/prefix`).
-   TODO: Provide Dropbox path later after the implementation.
-   - `dropbox`: Dropbox destination path.
+   - `local`: Local directory path (e.g., `~/Downloads/music`).
+   - `s3`: S3 URI (e.g., `s3://bucket-name/optional/prefix`).
+   - `dropbox`: Dropbox destination path (e.g., `/Music`).
 4. Determine optional arguments:
    - `format`: `m4a` (default) or `original`.
    - `name`: Custom output filename without extension (default: video title).
