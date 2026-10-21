@@ -15,8 +15,8 @@ permissions:
   contents: read
 
 jobs:
-  ci:
-    name: CI / Sequential checks
+  lint:
+    name: Lint / Ruff
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -28,17 +28,40 @@ jobs:
       - name: Install dependencies
         run: uv sync --locked
 
-      - name: Security / Bandit
-        run: uv run --no-sync bandit -r src/castoria -c pyproject.toml
-
-      - name: Lint / Ruff
+      - name: Ruff lint
         run: uv run --no-sync ruff check .
 
-      - name: Format / Ruff
+      - name: Ruff format
         run: uv run --no-sync ruff format --check .
 
-      - name: Unit test / Pytest
-        run: uv run --no-sync pytest --cov=castoria --cov-report=term-missing --cov-report=xml:coverage.xml
+  security:
+    name: Security / Bandit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+
+      - name: Install dependencies
+        run: uv sync --locked
+
+      - name: Run Bandit
+        run: uv run --no-sync bandit -r src/castoria -c pyproject.toml
+
+  validate_skills:
+    name: Agent Skills / Validate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+
+      - name: Install dependencies
+        run: uv sync --locked
 
       - name: Validate agent skills
         shell: bash
@@ -63,6 +86,23 @@ jobs:
             echo "::endgroup::"
           done
           exit "$status"
+
+  unit_test:
+    name: Unit Test / Pytest
+    needs: [lint, security, validate_skills]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+
+      - name: Install dependencies
+        run: uv sync --locked
+
+      - name: Run pytest with coverage
+        run: uv run --no-sync pytest --cov=castoria --cov-report=term-missing --cov-report=xml:coverage.xml
 
       - name: Upload coverage artifact
         uses: actions/upload-artifact@v4
