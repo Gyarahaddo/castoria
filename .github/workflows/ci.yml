@@ -15,6 +15,43 @@ permissions:
   contents: read
 
 jobs:
+  validate_skills:
+    name: Agent Skills / Validate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+
+      - name: Install skills-ref
+        run: uv tool install 'git+https://github.com/agentskills/agentskills.git@69ef37e9424c0a7ea9dd2293b559e43ec8176379#subdirectory=skills-ref'
+
+      - name: Validate agent skills
+        shell: bash
+        run: |
+          shopt -s nullglob dotglob
+          skill_dirs=()
+          for path in agent-skills/*; do
+            [[ -d "$path" ]] && skill_dirs+=("$path")
+          done
+          
+          if (( ${#skill_dirs[@]} == 0 )); then
+            echo "::error::No skill directories found in agent-skills/"
+            exit 1
+          fi
+          
+          status=0
+          for skill_dir in "${skill_dirs[@]}"; do
+            echo "::group::Validate $skill_dir"
+            if ! skills-ref validate "$skill_dir"; then
+              status=1
+            fi
+            echo "::endgroup::"
+          done
+          exit "$status"
+
   security:
     name: Security / Bandit
     runs-on: ubuntu-latest
