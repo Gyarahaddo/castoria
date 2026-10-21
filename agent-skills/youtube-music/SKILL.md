@@ -12,10 +12,11 @@ Execute the following command:
 ```bash
 castoria youtube-music download \
   --link "<youtube-url>" \
-  --storage <provider> \
-  --dest "<destination>" \
   [--format <format>] \
-  [--name "<filename>"]
+  [--storage <provider>] \
+  --dest "<destination>" \
+  [--name "<filename>"] \
+  [--verbose]
 ```
 
 ### Arguments
@@ -23,17 +24,18 @@ castoria youtube-music download \
 | Argument | Required | Default | Description |
 | --- | --- | --- | --- |
 | `--link` | Yes | — | YouTube video URL. |
+| `--format` | No | `m4a` | Audio format: `m4a` or `original`. |
 | `--storage` | No | `local` | Storage provider: `local`, `s3`, or `dropbox`. |
 | `--dest` | Yes | — | Destination directory, S3 URI, or Dropbox path. |
-| `--format` | No | `m4a` | Audio format: `m4a` or `original`. |
 | `--name` | No | Video title | Custom output filename without extension. |
+| `-v`, `--verbose` | No | `false` | Enable verbose logging. |
 
 The `original` format preserves the downloaded audio format without conversion.
 
 ## Workflow
 
 1. Obtain the YouTube video URL from the user.
-2. Determine the storage provider。
+2. Determine the storage provider.
 3. Obtain the destination from the user.
    - `local`: Local directory path (e.g., `~/Downloads/music`).
    - `s3`: S3 URI (e.g., `s3://bucket-name/optional/prefix`).
