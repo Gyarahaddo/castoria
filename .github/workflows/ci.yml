@@ -5,11 +5,15 @@ on:
     branches:
       - master
       - dev
+
   push:
     branches:
       - dev
       - 'add-*'
       - 'fix-*'
+    paths-ignore:
+      - 'README.md'
+      - 'assets/**'
 
 permissions:
   contents: read
