@@ -56,26 +56,53 @@ cd castoria
 uv sync
 ```
 
-### Skill Installation (Codex)
+### Skill Installation (Codex on Linux)
 
-After installing the CLI, paste the following prompt into a local Codex chat
-(not your terminal) to install the Castoria skills:
+From the Castoria repository root, link the entire skill collection into
+Codex's user-level skills directory:
 
-```text
-$skill-installer Install both skills from Gyarahaddo/castoria on the master branch:
-- agent-skills/castoria
-- agent-skills/youtube-music
+```bash
+mkdir -p "$HOME/.agents/skills"
+ln -s "$(pwd)/agent-skills" "$HOME/.agents/skills/castoria"
 ```
 
-The `castoria` skill lists available tools and points to their detailed skills.
-The `youtube-music` skill provides audio download instructions.
-Skill installation is separate from CLI installation; Castoria and FFmpeg
-must be available in the environment where Codex runs commands.
+The link points to `agent-skills/`, which contains both the top-level
+`castoria` skill and tool-specific skills such as `youtube-music`.
+New tool skills added to this directory are included without creating
+additional links. Keep the repository at the same location so the link
+continues to work.
+
+If you previously linked `youtube-music` separately, remove that old symlink
+with `unlink "$HOME/.agents/skills/youtube-music"` to avoid duplicate entries.
+If the `castoria` destination already exists, inspect it before replacing it.
+
+Skill installation is separate from CLI installation. Make the repository's
+CLI available to Codex by launching it from a terminal with the virtual
+environment activated:
+
+```bash
+source .venv/bin/activate
+castoria --help
+codex
+```
+
+FFmpeg must also be available in the environment where Codex runs commands.
 
 In your next turn, ask Codex to use `$castoria` to list available tools, or
 `$youtube-music` to download audio from a YouTube link to a local directory.
-If the skills do not appear, restart Codex. Installation and downloads require
-network access; allow Codex to request it when needed.
+If the skills do not appear, restart Codex. Downloads require network access;
+allow Codex to request it when needed.
+
+To update the CLI, dependencies, and linked skills, run the following from
+the same repository root:
+
+```bash
+git pull --ff-only
+uv sync
+```
+
+The symlink continues to use the updated skill files; no skill reinstallation
+is needed. If updated or newly added skills do not appear, restart Codex.
 
 See the [Codex skills documentation](https://developers.openai.com/codex/skills/)
 for details. For other agents, follow your agent's own skill installation
