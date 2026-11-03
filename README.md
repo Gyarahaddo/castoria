@@ -56,6 +56,31 @@ cd castoria
 uv sync
 ```
 
+### Skill Installation (Codex)
+
+After installing the CLI, paste the following prompt into a local Codex chat
+(not your terminal) to install the Castoria skills:
+
+```text
+$skill-installer Install both skills from Gyarahaddo/castoria on the master branch:
+- agent-skills/castoria
+- agent-skills/youtube-music
+```
+
+The `castoria` skill lists available tools and points to their detailed skills.
+The `youtube-music` skill provides audio download instructions.
+Skill installation is separate from CLI installation; Castoria and FFmpeg
+must be available in the environment where Codex runs commands.
+
+In your next turn, ask Codex to use `$castoria` to list available tools, or
+`$youtube-music` to download audio from a YouTube link to a local directory.
+If the skills do not appear, restart Codex. Installation and downloads require
+network access; allow Codex to request it when needed.
+
+See the [Codex skills documentation](https://developers.openai.com/codex/skills/)
+for details. For other agents, follow your agent's own skill installation
+instructions using the skill folders in [`agent-skills/`](agent-skills/).
+
 ### External Services
 
 Some storage providers require additional credentials or service configuration.
