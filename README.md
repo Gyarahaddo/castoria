@@ -75,7 +75,7 @@ uv sync
 
 ### Skill Installation
 
-This installation uses Codex on Linux as sample. See the [Codex skills documentation](https://developers.openai.com/codex/skills/)
+This example uses Codex on Linux. See the [Codex skills documentation](https://developers.openai.com/codex/skills/)
 for details. For other agents, follow your agent's own skill installation
 instructions using the skill folders in [`agent-skills/`](agent-skills/).
 
