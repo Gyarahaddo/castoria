@@ -46,7 +46,7 @@ or external service configurations.
 - [uv](https://docs.astral.sh/uv/)
 - FFmpeg (required for audio conversion)
 
-### Installation
+### CLI Installation
 
 Clone the repository and install the dependencies:
 
