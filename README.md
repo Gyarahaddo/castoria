@@ -46,7 +46,7 @@ or external service configurations.
 - [uv](https://docs.astral.sh/uv/)
 - FFmpeg (required for audio conversion)
 
-### Installation
+### CLI Installation
 
 Clone the repository and install the dependencies:
 
@@ -55,6 +55,50 @@ git clone https://github.com/Gyarahaddo/castoria.git
 cd castoria
 uv sync
 ```
+
+Install FFmpeg on Ubuntu.
+```bash
+sudo apt update
+sudo apt install ffmpeg
+
+ffmpeg -version
+ffprobe -version
+```
+
+To update the CLI, dependencies, and linked skills, run the following from
+the same repository root:
+
+```bash
+git pull --ff-only
+uv sync
+```
+
+### Skill Installation
+
+This example uses Codex on Linux. See the [Codex skills documentation](https://developers.openai.com/codex/skills/)
+for details. For other agents, follow your agent's own skill installation
+instructions using the skill folders in [`agent-skills/`](agent-skills/).
+
+From the Castoria repository root, link the entire skill collection into
+Codex's user-level skills directory:
+
+```bash
+mkdir -p "$HOME/.agents/skills"
+ln -s "$(pwd)/agent-skills" "$HOME/.agents/skills/castoria"
+```
+
+Skill installation is separate from CLI installation. Make the repository's
+CLI available to Codex by launching it from a terminal with the virtual
+environment activated:
+
+```bash
+source .venv/bin/activate
+castoria --help
+codex
+```
+
+The symlink continues to use the updated skill files; no skill reinstallation
+is needed. If updated or newly added skills do not appear, restart Codex.
 
 ### External Services
 
